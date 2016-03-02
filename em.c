@@ -293,7 +293,9 @@ next:
     }
 
 	printf("%s\n",instruction[(uchar)ir]);
-	printf(DBG_REG_CONTEX, a, b, c, xsp - tsp, (uint)xpc - tpc, f, g, (user==0 ? ssp-tsp : usp-tsp), user, iena, trap, paging, ipend);
+	printf(DBG_REG_CONTEX,
+               a, b, c, xsp - tsp, (uint)xpc - tpc, f, g,
+               (user ? usp : ssp) - tsp, user, iena, trap, paging, ipend););
 
     switch ((uchar)ir) {
     case HALT: if (user || verbose) dprintf(2,"halt(%d) cycle = %u\n", a, cycle + (int)((uint)xpc - xcycle)/4); return; // XXX should be supervisor!
