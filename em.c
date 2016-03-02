@@ -11,7 +11,7 @@
 #include <libm.h>
 #include <dir.h>
 
-char* inst[] = {
+char* instruction[] = {
   "HALT","ENT" ,"LEV","JMP","JMPI","JSR","JSRA","LEA","LEAG","CYC" ,"MCPY","MCMP","MCHR","MSET", // system
   "LL"  ,"LLS" ,"LLH" ,"LLC" ,"LLB" ,"LLD" ,"LLF" ,"LG"  ,"LGS" ,"LGH" ,"LGC" ,"LGB" ,"LGD" ,"LGF" , // load a
   "LX"  ,"LXS" ,"LXH" ,"LXC" ,"LXB" ,"LXD" ,"LXF" ,"LI"  ,"LHI" ,"LIF" ,
@@ -292,9 +292,8 @@ next:
       }
     }
 
-	printf("%s\t",inst[(uchar)ir]);
-	printf("a:%d,b:%d,c:%d\n", a, b, c, xsp - tsp, (uint)xpc - tpc, f, g,
-               (user ? usp : ssp) - tsp, user, iena, trap, paging, ipend);
+	printf("%s\n",instruction[(uchar)ir]);
+	printf(DBG_REG_CONTEX, a, b, c, xsp - tsp, (uint)xpc - tpc, f, g, (user==0 ? ssp-tsp : usp-tsp), user, iena, trap, paging, ipend);
 
     switch ((uchar)ir) {
     case HALT: if (user || verbose) dprintf(2,"halt(%d) cycle = %u\n", a, cycle + (int)((uint)xpc - xcycle)/4); return; // XXX should be supervisor!
