@@ -112,7 +112,7 @@ else:
                 workingset.append(n)
 
         if notrace == False:
-            print str(workingset)
+            # print str(workingset)
             print 'Access: %d  %s %s -> %12s <- %s Replaced:%s [Hits:%d Misses:%d]' % (n, hfunc(idx), leftStr, memory, riteStr, vfunc(victimset), hits, miss)
         addrIndex = addrIndex + 1
         
