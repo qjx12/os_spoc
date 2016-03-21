@@ -21,11 +21,10 @@ def vfunc(victimset):
 # main program
 #
 parser = OptionParser()
-parser.add_option('-a', '--addresses', default='-1',   help='a set of comma-separated pages to access; -1 means randomly generate',  action='store', type='string', dest='addresses')
+parser.add_option('-a', '--addresses', default='-1',   help='a set of comma-separated pages to access',  action='store', type='string', dest='addresses')
 parser.add_option('-p', '--policy', default='WorkingSet',    help='replacement policy: WorkingSet',                action='store', type='string', dest='policy')
 parser.add_option('-w', '--windowlength', default=3,      help='Window length for WorkingSet policy',                          action='store', type='int', dest='windowlength')
-parser.add_option('-f', '--pageframesize', default='5',    help='size of the physical page frame, in pages',                                  action='store', type='string', dest='pageframesize')
-parser.add_option('-s', '--seed', default='0',         help='random number seed',                                                    action='store', type='string', dest='seed')
+parser.add_option('-f', '--pageframesize', default=5,    help='size of the physical page frame, in pages',                         action='store', type='int', dest='pageframesize')
 parser.add_option('-N', '--notrace', default=False,    help='do not print out a detailed trace',                                     action='store_true', dest='notrace')
 parser.add_option('-c', '--compute', default=True,    help='compute answers for me',                                                action='store_true', dest='solve')
 
@@ -35,18 +34,14 @@ print 'ARG addresses', options.addresses
 print 'ARG policy', options.policy
 print 'ARG windowlength', options.windowlength
 print 'ARG pageframesize', options.pageframesize
-print 'ARG seed', options.seed
 print 'ARG notrace', options.notrace
 print ''
 
 addresses   = str(options.addresses)
 pageframesize   = int(options.pageframesize)
-seed        = int(options.seed)
 policy      = str(options.policy)
 notrace     = options.notrace
 windowlength = int(options.windowlength)
-
-random.seed(seed)
 
 addrList = []
 addrList = addresses.split(',')
@@ -71,8 +66,8 @@ else:
     miss = 0
 
     if policy == 'WorkingSet':
-        leftStr = 'FirstIn'
-        riteStr = 'LastIn'
+        leftStr = 'LRU'
+        riteStr = 'MRU'
     else:
         print 'Policy %s is not yet implemented' % policy
         exit(1)
@@ -88,6 +83,8 @@ else:
             if len(workingset) == windowlength:
                 del workingset[0]
             workingset.append(n)
+            memory.remove(n)
+            memory.append(n)
             hits = hits + 1
         except:
             idx = -1
@@ -101,7 +98,7 @@ else:
                 while len(memory):
                     m = memory[0]
                     try:
-                        idx = workingset.index(m)
+                        victim = workingset.index(m)
                         if len(memory) == pageframesize:
                             del memory[0] 
                             victimset.push(m)
