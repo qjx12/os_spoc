@@ -25,4 +25,4 @@ if(mem_maps_num>=UPHYSZ/PAGE) { //need swap out
 
 访问页面时访问位置1。
 
-在swap_out函数中，
+在swap_out函数中，从指针处开始顺序查找需要换出的页。若访问位为1，置0后继续查找；若访问位为0，将这一页换出。
