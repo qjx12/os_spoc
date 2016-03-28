@@ -175,10 +175,7 @@ class scheduler:
             # and add an io completion in the future
             if instruction_to_execute == DO_YIELD:
                 #YOUR CODE
-                if len(self.proc_info[self.curr_proc][PROC_CODE]) == 0:
-                    self.move_to_done(STATE_RUNNING)
-                else:
-                    self.move_to_ready(STATE_RUNNING)
+                self.move_to_ready(STATE_RUNNING)
                 self.next_proc()
 
             # ENDCASE: check if currently running thing is out of instructions
